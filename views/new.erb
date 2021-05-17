@@ -1,0 +1,49 @@
+<form action="/new" method="post" class="new-game">
+  <div class="new-game">
+    <label for="human_name">Enter your name:</label>
+    <input name="human_name" type="text" required>
+  </div>
+
+  <p class="new-game">Select number of rounds:</p>
+
+  <div class="new-game">
+    <input name="rounds" value="1" type="radio" id="1">
+    <label for="1">1</label>
+
+    <input name="rounds" value="3" type="radio" id="3" checked>
+    <label for="3">3</label>
+
+    <input name="rounds" value="5" type="radio" id="5">
+    <label for="5">5</label>
+  </div>
+
+  <p class="new-game">Select your board size:</p>
+
+  <div class="new-game">
+    <input name="board_size" value="3" type="radio" id="3" checked>
+    <label for="3">3</label>
+
+    <input name="board_size" value="5" type="radio" id="5">
+    <label for="5">5</label>
+
+    <input name="board_size" value="7" type="radio" id="7">
+    <label for="7">7</label>
+  </div>
+
+  <p class="new-game">Select opponent difficulty:</p>
+
+  <div class="new-game">
+    <input name="difficulty" value="competitive" type="radio" id="competitive" checked>
+    <label for="competitive">competitive</label>
+
+    <input name="difficulty" value="minimax" type="radio" id="minimax">
+    <label for="minimax">minimax</label>
+
+    <input name="difficulty" value="negamax" type="radio" id="negamax">
+    <label for="negamax">negamax</label>
+  </div>
+
+  <div class="new-game">
+    <button type="submit">Get Started</button>
+  </div>
+</form>

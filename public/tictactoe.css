@@ -1,0 +1,84 @@
+body {
+  padding: 1em;
+  font-family: sans-serif;
+}
+
+.message {
+  padding: 10px;
+  background: lightyellow;
+}
+
+.user-status {
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+form.new-game {
+  display: table;
+  padding-bottom: 10px;
+}
+
+div.new-game {
+  display: table-row;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+
+p.new-game,
+label.new-game,
+input.new-game[type="text"] {
+  display: table-cell;
+  margin-bottom: 10px;
+}
+
+label {
+  padding-right: 10px;
+  margin: 0.4rem 0;
+}
+
+.grid {
+  display: grid;
+}
+
+#board-3 {
+  display: grid;
+  grid-template-columns: 150px 5px 150px 5px 150px;
+  grid-template-rows: 150px 5px 150px 5px 150px;
+  width: 460px;
+  height: 460px;
+}
+
+#board-5 {
+  display: grid;
+  grid-template-columns: 150px 5px 150px 5px 150px 5px 150px 5px 150px;
+  grid-template-rows: 150px 5px 150px 5px 150px 5px 150px 5px 150px;
+  width: 770px;
+  height: 770px;
+}
+
+#board-7 {
+  display: grid;
+  grid-template-columns: 150px 5px 150px 5px 150px 5px 150px 5px 150px 5px 150px 5px 150px;
+  grid-template-rows: 150px 5px 150px 5px 150px 5px 150px 5px 150px 5px 150px 5px 150px;
+  width: 1080px;
+  height: 1080px;
+}
+
+div.square,
+form.square,
+button.square {
+  text-align: center;
+  font-size: 125px;
+  font-weight: 100;
+  background: lightblue;
+  width: 150px;
+  height: 150px;
+}
+
+button.square {
+  opacity: 0;
+}
+
+.divider {
+  background: black;
+}

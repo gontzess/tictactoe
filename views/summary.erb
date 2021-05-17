@@ -1,0 +1,30 @@
+<h2><%= @game.display_score %></h2>
+
+<% if session[:message] %>
+  <p class="message"><%= session.delete(:message) %></p>
+<% end %>
+
+<% if session[:results] %>
+  <h3 class="message"><%= session.delete(:results) %></h3>
+<% end %>
+
+<% unless @game.over? %>
+  <p><a href="/play?next_round=true">Continue to Next Round</a></p>
+<% end %>
+<p><a href="/new">Start New Game</a></p>
+
+<div class="grid" id="board-<%= @board_size %>">
+  <% @game.board.each_square do |number, square| %>
+    <% if square.unmarked? %>
+      <div class="square"></div>
+    <% else %>
+      <div class="square"><%= square.marker %></div>
+    <% end %>
+
+    <% if number % @board_size == 0 %>
+      <%= row_of_dividers %>
+    <% else %>
+      <div class="divider"></div>
+    <% end %>
+  <% end %>
+</div>
