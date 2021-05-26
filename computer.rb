@@ -13,7 +13,6 @@ class Computer < TTTPlayer
   def calculate_move
     case @difficulty
     when :competitive then find_competitive_move
-    when :minimax     then find_minimax_move
     when :negamax     then find_negamax_move
     end
   end
@@ -30,7 +29,7 @@ class Computer < TTTPlayer
     @plies = case @board.board_size ## set recommended max plies
              when 3 then 10
              when 5 then 10
-             else        3
+             when 7 then 3
              end
   end
 
@@ -58,61 +57,25 @@ class Computer < TTTPlayer
     board.unmarked_keys.sample
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def minimax(square_key, brd, depth, side=1)
-    brd_copy = brd.copy
-    maximizing_player = side.positive?
-    brd_copy[square_key] = maximizing_player ? @marker : @opponent_marker
-
-    terminal_node, value = brd_copy.terminal_node(@marker, @opponent_marker)
-    return depth * value if terminal_node || depth == 0
-
-    value = maximizing_player ? -INFINITY : INFINITY
-
-    brd_copy.unmarked_keys.each do |key|
-      value = [value, minimax(key, brd_copy, (depth - 1), -side)]
-      value = maximizing_player ? value.max : value.min
-    end
-
-    value
-  end
-  # rubocop:enable Metrics/MethodLength
-
-  def find_minimax_move(brd=@board, depth=@plies, side=1)
-    empty_keys = brd.unmarked_keys
-    return brd.center_key if brd.center_square.unmarked?
-    return find_competitive_move if empty_keys.length > 9
-
-    weights = empty_keys.each_with_object({}) do |key, hash|
-      hash[key] = minimax(key, brd, depth, side)
-    end
-    max_weight = weights.values.max
-    max_keys = weights.select { |_, val| val == max_weight }.keys
-
-    return max_keys.first if max_keys.length == 1
-
-    max_keys.sample
-  end
-
-  def negamax(square_key, brd, depth, side=1)
+  def negamax(square_key, brd, depth, side)
     brd_copy = brd.copy
     marker = side.positive? ? @marker : @opponent_marker
     brd_copy[square_key] = marker
 
-    terminal_node, value = brd_copy.terminal_node(@marker, @opponent_marker)
-    return side * depth * value if terminal_node || depth == 0
+    terminal_value = brd_copy.terminal_node(@marker, @opponent_marker)
+    return side * terminal_value if terminal_value || depth == 0
 
     value = -INFINITY
 
     brd_copy.unmarked_keys.each do |key|
-      value = [value, -negamax(key, brd_copy, (depth - 1), -side)].max
+      value = [value, negamax(key, brd_copy, (depth - 1), -side)].max
     end
-    value
+    -value
   end
 
   def find_negamax_move(brd=@board, depth=@plies, side=1)
     empty_keys = brd.unmarked_keys
-    return brd.center_key if brd.center_square.unmarked?
+    return brd.center_key if brd.empty?
     return find_competitive_move if empty_keys.length > 9
 
     weights = empty_keys.each_with_object({}) do |key, hash|
@@ -120,8 +83,6 @@ class Computer < TTTPlayer
     end
     max_weight = weights.values.max
     max_keys = weights.select { |_, val| val == max_weight }.keys
-
-    return max_keys.first if max_keys.length == 1
 
     max_keys.sample
   end

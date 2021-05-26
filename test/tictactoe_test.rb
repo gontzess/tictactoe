@@ -38,7 +38,7 @@ class TTTTest < Minitest::Test
     assert_nil session[:message]
 
     post "/new", { human_name: "tester", rounds: "3", board_size: "3",
-      difficulty: "minimax" }
+      difficulty: "negamax" }
     assert_equal 302, last_response.status
     assert_equal true, session[:game].is_a?(TTTGame)
     assert_includes session[:message], "tester, welcome to Tic Tac Toe!"
@@ -55,7 +55,7 @@ class TTTTest < Minitest::Test
 
   def test_user_first_move_submit
     post "/new", { human_name: "tester", rounds: "3", board_size: "3",
-      difficulty: "minimax" }
+      difficulty: "negamax" }
     assert_equal 302, last_response.status
 
     get last_response["Location"]

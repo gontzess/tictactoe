@@ -38,7 +38,7 @@ class Board
     (1..@num_of_squares).each do |key|
       brd_clone[key] = @squares[key].marker
     end
-    brd_clone.update_winnable_lines
+    brd_clone
   end
 
   def unmarked_keys
@@ -63,16 +63,15 @@ class Board
 
   def terminal_node(marker, opponent_marker)
     certain_win = winning_marker == marker
-    certain_loss = !!at_risk_squares(opponent_marker)
     certain_tie = draw_round?
+    certain_loss = winning_marker == opponent_marker
 
-    terminal_node = certain_tie || certain_win || certain_loss
-    node_value = if certain_win      then 100
-                 elsif certain_loss  then -100
-                 elsif certain_tie   then 0
-                 else                     unmarked_keys.length
-                 end
-    return terminal_node, node_value
+
+    if certain_win     then 100
+    elsif certain_tie  then 0
+    elsif certain_loss then -100
+    else                    nil
+    end
   end
 
   def winning_marker
@@ -90,15 +89,11 @@ class Board
   end
 
   def draw_round?
-    update_winnable_lines
-    @winning_lines.empty?
+    @winning_lines.reject { |line| unwinnable?(line) }.empty?
   end
 
-  protected
-
-  def update_winnable_lines
-    @winning_lines.reject! { |line| unwinnable?(line) }
-    self
+  def empty?
+    @squares.values.all?(&:unmarked?)
   end
 
   private
@@ -152,7 +147,8 @@ class Board
 
   def unwinnable?(line)
     squares, markers = content_from(line)
-    markers.uniq.size == 3 || squares.all?(&:marked?)
+    markers_count = markers.uniq.size
+    markers_count == 3 || (markers_count == 2 && squares.all?(&:marked?))
   end
 
   def find_at_risk_squares(player_marker, depth=1)
