@@ -3,6 +3,8 @@
 require_relative "tttplayer"
 
 class Computer < TTTPlayer
+  attr_reader :difficulty
+
   def initialize(name, board, opponent_marker, difficulty)
     @opponent_marker = opponent_marker
     @difficulty = difficulty

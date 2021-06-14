@@ -5,10 +5,16 @@ require "sinatra/reloader" if development?
 require "tilt/erubis"
 
 require_relative "tttgame"
+require_relative "database_storage"
 
 configure do
   enable :sessions
   set :session_secret, "secret" ## normally wouldn't store env variable in code
+end
+
+configure(:development) do
+  require "sinatra/reloader"
+  also_reload "database_storage.rb"
 end
 
 helpers do
@@ -19,6 +25,14 @@ helpers do
   def row_of_dividers
     divider * (@game.board.board_size * 2 - 1)
   end
+end
+
+before do
+  @storage = DatabaseStorage.new
+end
+
+after do
+  @storage.disconnect
 end
 
 get "/" do
@@ -60,7 +74,6 @@ get "/play" do
   end
 
   if @game.board.someone_won_round? || @game.board.draw_round?
-    # session.delete(:message)
     session[:results] = @game.round_results
     session[:results] = @game.game_results if @game.over?
     redirect "/summary"
@@ -86,5 +99,13 @@ get "/summary" do
   redirect "/new" unless @game
   @board_size = @game.board.board_size
 
+  @storage.add_to_leaderboard(@game) if @game.over?
+
   erb :summary
+end
+
+get "/leaderboard" do
+  @leaderboard = @storage.all_leaderboard_results
+
+  erb :leaderboard
 end

@@ -1,0 +1,18 @@
+<h2>Leaderboard</h2>
+
+<table style="border: 2px solid black;">
+  <tr>
+    <% @leaderboard.first.keys.each do |title_cell| %>
+      <th style="text-align: center; padding: 10px 20px;"><%= title_cell %></th>
+    <% end %>
+  </tr>
+  <% @leaderboard.each do |row| %>
+    <tr>
+      <% row.values.each do |cell| %>
+        <td style="text-align: center; padding: 10px 20px;"><%= cell %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<p><a href="/new">Start New Game</a></p>

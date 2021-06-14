@@ -82,3 +82,20 @@ button.square {
 .divider {
   background: black;
 }
+
+table {
+  border-collapse: collapse;
+  border: 2px solid black;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+td {
+  text-align: center;
+}

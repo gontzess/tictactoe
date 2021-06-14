@@ -5,7 +5,7 @@ require_relative "human"
 require_relative "computer"
 
 class TTTGame
-  attr_reader :board, :human, :computer
+  attr_reader :board, :human, :computer, :round
 
   def initialize(player_name, computer_name, rounds, board_size, difficulty)
     @rounds_to_win = rounds
